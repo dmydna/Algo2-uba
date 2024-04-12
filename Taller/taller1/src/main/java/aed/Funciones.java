@@ -37,7 +37,7 @@ class Funciones {
     }
 
     boolean esPrimo(int n) { 
-        int cantDeDivisores = 0;
+        int cantDeDivisores = 0; boolean res = false;
 
         if (n==1){
             return false;
@@ -46,15 +46,16 @@ class Funciones {
         for (int i=1; i<=n;i++){
             if (n % i == 0){
                 cantDeDivisores += 1;
+                res = cantDeDivisores == 2;
             }
         }
-        return cantDeDivisores == 2;
+        return res;
     }
 
     int sumatoria(int[] numeros) {
         int res = 0;
         for (int i=0; i < numeros.length; i++){
-            res = res  + numeros[i];
+            res += numeros[i];
         }
         return res;
     }
@@ -64,6 +65,7 @@ class Funciones {
         for(int i=0; i < numeros.length; i++){
            if (numeros[i]==buscado){
             res = i;
+            break;
            }
         }
         return res;
@@ -71,9 +73,10 @@ class Funciones {
 
     boolean tienePrimo(int[] numeros) {
         boolean res = false;
-        for (int i=0; i < numeros.length;i++){
+        for (int i=0; i < numeros.length; i++){
             if(esPrimo(numeros[i])){
                 res = true;
+                break;
             }
         }
         return res;
@@ -82,7 +85,7 @@ class Funciones {
     boolean todosPares(int[] numeros) {
         boolean res = true;
 
-        for(int i=0; i< numeros.length;i++){
+        for(int i=0; i< numeros.length; i++){
             if(!esPar(numeros[i])){
                 res = false;
                 break;

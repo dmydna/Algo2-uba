@@ -1,4 +1,4 @@
-# Algoritmos y Estructuras de Datos I (plan 2023)
+# Algoritmos y Estructuras de Datos (plan 2023)
 
 
 Carrera: Ciencias de la Computacion - UBA\

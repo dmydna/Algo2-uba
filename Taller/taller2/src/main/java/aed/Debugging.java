@@ -24,17 +24,8 @@ class Debugging {
 
     boolean ordenado(int[] xs) {
         boolean res = true;
-
-        if(xs.length == 1) return true;
-
-        for (int i = 0; i < xs.length; i++) {
-            if(i == xs.length -1){
-                if(xs[i] >= xs[i-1]) res = true;
-                else{res = false;}
-                break;
-            }
-
-            if (xs[i] > xs [i+1]) {
+        for (int i = 1; i < xs.length; i++) {
+            if(xs[i] < xs[i-1]) {
                 res = false;
                 break;
             }
@@ -43,15 +34,12 @@ class Debugging {
     }
 
     int maximo(int[] xs) {
-        int res = 0;
-        for (int i = 0; i < xs.length; i++) {
-            
-            if (xs[i] > 0 && xs[i] > res) res = xs[i];
-            else if(xs[i]< 0 && res!=0 && xs[i] > res){
+        if (xs.length == 0) return  0;
+        int res = xs[0];
+        for (int i = 1; i < xs.length; i++) {
+            if (xs[i] >= res) {
                 res = xs[i];
-            }else if (xs[i]< 0 && res==0) {
-                res = xs[i];
-            }
+            } 
         }
         return res;
     }
