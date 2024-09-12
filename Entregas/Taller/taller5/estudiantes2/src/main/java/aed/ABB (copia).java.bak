@@ -1,0 +1,322 @@
+package aed;
+
+// Todos los tipos de datos "Comparables" tienen el método compareTo()
+// elem1.compareTo(elem2) devuelve un entero. Si es mayor a 0, entonces elem1 > elem2
+public class ABB<T extends Comparable<T>> implements Conjunto<T> {
+    
+    private Nodo _raiz;
+    private int _cardinal;
+    private int _altura;
+
+    private class Nodo {
+        T valor;
+        Nodo izq;
+        Nodo der;
+        Nodo arriba;
+        Nodo(T v){
+            valor = v;
+            izq = null;
+            der = null;
+            arriba = null;
+        }
+        Nodo(Nodo nodo){
+            valor = nodo.valor; 
+            izq = nodo.izq;
+            der = nodo.der;
+            arriba = nodo.arriba;
+        }
+
+        public boolean nodoEquals(Nodo nodo2){
+            return arriba == nodo2.arriba 
+                   && der == nodo2.der
+                   && arriba == nodo2.arriba
+                   && valor.compareTo(nodo2.valor) == 0 ;   
+        }
+    }
+
+    public ABB() {
+        _raiz = null;
+        _cardinal = 0;
+        _altura=0;
+    }
+
+    public int cardinal() {
+        return _cardinal;
+        
+    }
+    
+    public T minimo(){
+        Nodo nodo = _raiz;
+        Nodo arriba = null;
+
+        while (nodo != null){
+            arriba = nodo;
+            nodo = nodo.izq; 
+        }
+        return arriba.valor;
+    }
+
+    public T maximo(){
+        Nodo nodo = _raiz;
+        Nodo arriba = null;
+
+        while (nodo != null){
+            arriba = nodo;
+            nodo = nodo.der;
+        }
+        return arriba.valor;
+    }
+
+    // ok 
+    public void insertar(T elem){
+        // en insertar se definen:
+        //    nodo.arriba, 
+        //    nodo.izq, 
+        //    nodo.der
+        
+        Nodo nuevo = new Nodo(elem);
+        Nodo nodo = _raiz;
+        Nodo previo = null;
+
+        if(!pertenece(elem)){
+            if(_raiz == null){ 
+                _raiz = nuevo;
+            }else{ 
+              
+                // nodo != null
+                while(elem.compareTo(nodo.valor) != 0){ // elem != nodo
+
+                    // actualizo nodo
+                    if(elem.compareTo(nodo.valor) < 0){ // elem < nodo
+                        // elem es hijo izquierdo
+                        // busco espacio izq libre
+                        if (nodo.izq != null){     // tiene hijo
+                           previo = nodo; // guardo previo
+                           nodo = nodo.izq; // sigo
+                        }else{ // nodo.izq = null  // no tiene hijo
+                            previo = nodo;
+                            nodo.izq = nuevo; // inserto nuevo
+                            nodo = nodo.izq;  // nodo = elem
+                            //break;
+                        }  
+                        nodo.arriba = previo;
+
+                    }else{     // elem > nodo
+                        // elem es hijo derecho
+                        // busco espacio derecho libre
+                        if (nodo.der != null){
+                            previo = nodo;    
+                            nodo = nodo.der; // sigo
+                        }else{ // nodo.der = null
+                            previo = nodo;
+                            nodo.der = nuevo; // inserto nuevo
+                            nodo = nodo.der;  // nodo = elem
+                            //break;
+                        } 
+                        nodo.arriba = previo;   
+                    }
+                }
+            } 
+            _cardinal++;    
+        }
+        
+        
+        
+    }
+
+
+    public boolean pertenece(T elem){
+        Nodo nodo = _raiz;
+        int k;
+
+        while (nodo != null) {
+
+           k = elem.compareTo(nodo.valor);
+           if(k==0){ // elem = nodo
+             return true;
+           }
+           nodo.arriba = nodo; // nodo previo.
+           if(k<0){ // elem < nodo
+              nodo = nodo.izq;
+            }else{  // elem > nodo
+              nodo = nodo.der;
+            }
+        }
+        return false;
+    }
+
+
+
+
+    public void eliminar(T elem){
+        Nodo nodo = _raiz;
+        Nodo nodo_elem ;
+
+        if (pertenece(elem)){
+
+            Nodo padre = nodo.arriba;
+            Nodo hijo;
+            Nodo elem_nodo;
+            boolean estaAlaDerecha; 
+            final Nodo nodo_hijo;
+
+
+
+            // busco nodo = elem
+            while(elem.compareTo(nodo.valor) != 0){ // elem != nodo
+                 // nodo previo
+                if (elem.compareTo(nodo.valor) < 0){
+                    nodo = nodo.izq;
+                }else{
+                    nodo= nodo.der;
+                }
+            }   
+            
+
+  // guardo el nodo elem para despues 
+
+            // nodo = elem  
+            // previo --> nodo.arriba 
+
+            // no tiene desendencia
+            if(nodo.der == null && nodo.izq == null){
+                nodo = nodo.arriba; // padre elem
+                boolean elemEstaAlaDerecha = nodo.der!=null && elem.compareTo(nodo.der.valor)== 0;
+
+                nodo.der = elemEstaAlaDerecha ? null : nodo.der;
+                nodo.izq = elemEstaAlaDerecha ? nodo.izq : null; 
+
+            }
+
+            // tiene un solo hijo
+            if(nodo.der!=null ^  nodo.izq!=null){
+      
+                final boolean elemTieneHijoDer; // constante
+
+                elemTieneHijoDer = nodo.der!=null;
+                // mi nodo actual es nodo = elem
+
+                // Hijo :::
+
+                // busco hijo de elem
+                hijo = elemTieneHijoDer ? nodo.der : nodo.izq;
+                // actualizo hijo
+                hijo.arriba = padre;  
+                nodo_hijo = hijo; // guardo hijo en una constante
+
+                // Padre :::
+
+                nodo = nodo.arriba;   // subo de nivel
+                
+                //mi nodo actual es nodo = padre 
+
+                estaAlaDerecha = nodo.der != null && elem.compareTo(nodo.der.valor)==0;
+                
+                // busco el nodo de elem
+                nodo_elem =  estaAlaDerecha ? nodo.der : nodo.izq;
+                // reemplazo elem por su hijo
+                nodo_elem = nodo_hijo;
+        
+            }
+            // tiene dos hijos
+            if(nodo.der != null && nodo.izq != null){
+
+                // busco sucesor
+                if(nodo.der != null){ // tiene subarbol derecho
+                    nodo = nodo.der;
+                    while (nodo.izq != null){
+                        nodo = nodo.izq;
+                    } 
+                }    
+
+
+                padre = nodo.arriba;
+
+                while (padre != null && nodo == padre.izq){
+                    nodo = padre;
+                    padre = padre.arriba;
+                }
+          }
+    }
+    _cardinal --;
+}
+
+
+    // Aux Fucktions
+
+    public boolean perteneceRecursivo(Nodo nodo, T elem){
+    
+        if(nodo == null){
+            return false;
+        }else{
+            int k = elem.compareTo(nodo.valor);  
+            // elem == nodo.valor
+            if(k == 0){
+                return true;    
+            }
+            // elem < nodo.valor
+            if(k < 0){
+                nodo.arriba = nodo;
+                nodo = nodo.izq;  
+                return perteneceRecursivo(nodo, elem);      
+            }else{
+                nodo.arriba = nodo;
+                nodo = nodo.der;   
+                return perteneceRecursivo(nodo, elem);
+            }
+
+        }        
+    }
+
+    public Nodo sucesor(Nodo nodo){
+       if(nodo != null){ 
+            while (nodo.der != null){
+                nodo.arriba = nodo;
+                nodo = nodo.der; 
+            }
+            return nodo ;
+       }
+       Nodo padre = nodo.arriba; 
+       while (padre != null && nodo == padre.der ) {
+           nodo = padre;
+           padre = nodo.arriba;
+       } 
+       return padre;
+    }
+
+    public Nodo buscarNodo(Nodo nodo, T elem){
+        int k = elem.compareTo(nodo.valor);
+        while(nodo != null && k != 0){
+            nodo.arriba = nodo;
+            if (k < 0){
+                nodo = nodo.der;
+            }else{
+                nodo= nodo.izq;
+            }
+        }return nodo;
+    }
+
+
+    //
+
+    public String toString(){
+        throw new UnsupportedOperationException("No implementada aun");
+    }
+
+    private class ABB_Iterador implements Iterador<T> {
+        private Nodo _actual;
+
+        public boolean haySiguiente() {            
+            throw new UnsupportedOperationException("No implementada aun");
+        }
+    
+        public T siguiente() {
+            throw new UnsupportedOperationException("No implementada aun");
+        }
+    }
+
+    public Iterador<T> iterador() {
+        return new ABB_Iterador();
+    }
+
+}

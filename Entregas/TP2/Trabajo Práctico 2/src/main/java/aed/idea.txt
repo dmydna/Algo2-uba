@@ -1,0 +1,32 @@
+
+inscriptos : dict<estudiante, dict<carrera,nombreMateria> >
+docentes: dict< cargoDocente, dict<carrera, nombreMateria> >
+
+
+impl nuevoSistema( infoMaterias: seq<carreras, NombreMaterias>,
+                   libretasUniversitarias: seq<String>): SistemaSIU 
+
+     for alumnos in libretasUniversitarias:
+         for (carreras,materia) in info materias:
+              inscriptos[alumnos] = (carreras,materia) 
+      return        
+
+impl plantelDocente( sistema: SistemaSIU, carreas: String,  nombreMateria: string):seq<N> 
+
+        # idea --> plantelDocente: seq( docentes: k, docuentes: V )
+        lista = []
+
+        # aca asigno una variable al Key y al Value, para poder iterar mas rapido.
+
+        for  (cargoDocente, (carrera,materia)) in plantelDocente:
+              lista.append(cargo,carrera,materia)
+        return
+
+impl agregaDocente(sistema: sistemaSIU,
+                  cargo: String,
+                  carrera: String,
+                  nombreMateria: String)
+      
+      docentes[cargo] =  (carrera,materia)           
+
+
