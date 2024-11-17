@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="image.png" alt="header-img"/>
+  <img src="img/image.png" alt="Sublime's custom image"/>
 </p>
 
 <br>
@@ -16,7 +16,7 @@
 para el caso en que el arreglo a ordenar se encuentre perfectamente ordenado de manera
 inversa a la deseada.
 
-<details><summary><b>📖 respuesta</b></summary>
+<details><summary><b>💡 solucion</b></summary>
 <hr>
 
 Habria que usar un algoritmo __no-estable__, con la menor complejidad posible.
@@ -30,7 +30,7 @@ por ende la complejidad cambia a su mejor caso que es O(n log n)
 **Ejercicio 2**. Defina la propiedad de estabilidad en un algoritmo de ordenamiento. Explique por que 
 que el algoritmo de heapSort no es estable
 
-<details><summary><b>📖 respuesta</b></summary>
+<details><summary><b>💡 solucion</b></summary>
 <hr>
 
 La estabilidad en los algoritmos de ordenamiento significa que, cuando se aplica el algoritmo, 
@@ -70,7 +70,7 @@ __Complejidad__: `O(n^2)`
 **Ejercicio 4**. Escribir un algoritmo que encuentre los k elementos mas chicos de un arreglo de dimension n, donde k ≤ n.
 ¿Cual es su complejidad temporal? ¿A partir de que valor de k es ventajoso ordenar el arreglo entero primero?
 
-<details><summary><b>📖 respuesta</b></summary>
+<details><summary><b>💡 solucion</b></summary>
 <hr>
 
 ```
@@ -119,7 +119,7 @@ y los siguiente $s_{i}[1]$ asi hasta $s_{i}[n]$
 **Ejercicio 6**. Se tiene un arreglo de n numeros naturales que se quiere ordenar por frecuencia, y en caso de igual frecuencia, por su valor. Por ejemplo, a partir del arreglo [1, 3, 1, 7, 2, 7, 1, 7, 3] se quiere obtener [1, 1, 1, 7, 7, 7, 3, 3, 2]. Describa un algoritmo que realice el ordenamiento descripto, utilizando las estructuras de datos intermedias que considere necesarias.
 Calcule el orden de complejidad temporal del algoritmo propuesto.
 
-<details><summary><b>📖 respuesta</b></summary>
+<details><summary><b>💡 solucion</b></summary>
 <hr>
 
 __OrdenarPorFrecuencia__:
@@ -152,20 +152,20 @@ El resultado debe ser del mismo tipo de datos que el arreglo original. Calcule l
 Por ejemplo, el siguiente arreglo
 
 <p align="center">
-  <img src="image-1.png" alt="ej7-img-1"/>
+  <img src="img/image-1.png" alt="Sublime's custom image"/>
 </p>
 
 deberia ser transformado a
 
 <p align="center">
-  <img src="image-2.png" alt="ej7-img-2"/>
+  <img src="img/image-2.png" alt="Sublime's custom image"/>
 </p>
 
 *Ayuda*: se aconseja comenzar el ejercicio con una clara descripci´on en castellano de la estrategia que propone para resolver
 el problema.
 
 
-<details><summary><b>📖 solucion</b></summary>
+<details><summary><b>💡 solucion</b></summary>
 <hr>
 
 
@@ -250,3 +250,162 @@ lugar de arrays por todos lados.
 *Ayuda*: deberia hallar un algoritmo que requiera tiempo O(n log d) en peor caso, donde n es la cantidad de elementos a ordenar y d es la cantidad de elementos distintos. Para inspirarse, piense en Heap Sort (no en los detalles puntuales, sino en la idea general de este ultimo).
 Justifique por que su algoritmo cumple con lo pedido.
 
+
+
+<details><summary><b>💡 solucion</b></summary>
+<hr>
+
+__ALGORITMO__
+```
+AVLsort(int A: array<int>)
+  Avl = new avl()      // O(1)
+  for i=0 ...Tam(A)     // O(n)
+    Avl.agregar(A[i]) // (log n)
+  endfor
+  res= Avl.inorderAVL() // O(n)
+  return res 
+```
+
+__Complejidad__: O(n log n)  
+<hr>
+</details>
+
+
+**Ejercicio 9**. Se tienen dos arreglos de numeros naturales, `A[1..n]` y `B[1..m]`. Nada en especial se sabe de B, pero A tiene `n′` secuencias de numeros repetidos continuos (por ejemplo `A = [3333311118888877771145555], n′ = 7`). Se sabe ademas que `n′`es mucho mas chico que `n`. Se desea obtener un arreglo C de tamaño `n + m` que contenga los elementos de A y B, ordenados.
+
+1. Escriba un algoritmo para obtener C que tenga complejidad temporal `O(n + ( n′ + m ) log(n′ + m))` en el peor caso.
+Justifique la complejidad de su algoritmo.
+
+2. Suponiendo que todos los elementos de B se encuentran en A, escriba un algoritmo para obtener C que tenga complejidad temporal `O(n + n′(log(n′) + m))` en el peor caso y que utilice solamente arreglos como estructuras auxiliares.
+Justifique la complejidad de su algoritmo.
+
+<details><summary><b>💊 solucion</b></summary>
+
+
+new d = new dictLog<valor, longitud> // O(1)
+
+
+rep = 0
+for i=1 ... tam(A)  // O(n)
+  if A[i-1] != A[i]
+    rep ++
+  else
+    definirRapido(d,A[i-1], rep) 
+    rep = 0
+end for
+
+for i=1 ... tam(B)  // O(n)
+  if B[i-1] != B[i]
+    rep ++
+  else
+    definirRapido(d,B[i-1], rep) 
+    rep = 0
+end for
+
+
+
+1.
+```
+def merge_arrays(A, B):
+    # Paso 1: Agrupar secuencias de A
+    agrupadas_A = []
+    start = 0
+    for i in range(1, len(A)):
+        if A[i] != A[start]:
+            agrupadas_A.append((A[start], i - start))  # (valor, longitud)
+            start = i
+    agrupadas_A.append((A[start], len(A) - start))  # Última secuencia
+
+    # Paso 2: Construir un arreglo temporal con las secuencias agrupadas y B
+    temporal = [val for val, _ in agrupadas_A] + B
+
+    # Paso 3: Ordenar el arreglo temporal
+    temporal.sort()
+
+    # Paso 4: Reconstruir el arreglo C ordenado
+    C = []
+    for val, count in agrupadas_A:
+        C.extend([val] * count)  # Expandir las secuencias originales de A
+    C.extend(B)
+    C.sort()
+    return C
+```
+
+
+
+
+</details>
+
+
+**Ejercicio 10**. Considere la siguiente estructura para guardar las notas de un alumno de un curso:
+
+
+<p align="center">
+  <img src="img/image-4.png" alt="Sublime's custom image"/>
+</p>
+
+Se necesita ordenar un arreglo de alumnos de forma tal que todes les alumnes de la mañana aparezcan al inicio de la tabla según un orden creciente de notas y todos los de la noche aparezcan al final de la tabla también ordenados de manera creciente respecto de su puntaje, como muestra en el siguiente ejemplo:
+
+<p align="center">
+  <img src="img/image-3.png" alt="Sublime's custom image"/>
+</p>
+
+
+1. Proponer un algoritmo de ordenamiento proc ordenaPlanilla(inout p : Array⟨alumno⟩) para resolver el problema descripto anteriormente y cuya complejidad temporal sea O(n) en el peor caso, donde n es la cantidad de elementos del arreglo. Justificar.
+
+<details><summary><b>💡 solucion</b></summary>
+<hr>
+
+ordenar = new array(p.size)
+
+mitad = 0
+for i...tam(p)     // O(n)
+
+  if p[i].turno == mañana
+    ordenar[i] = p[i]
+    mitad = i  
+  else
+    ordenar[tam(p)-i] = p[i] 
+endfor
+
+mañana = new array(mitad)
+noche = new array(tam(p)-mitad)
+
+for i...tam(mañana)
+  mañana[i] = ordenar[i]
+endfor
+ 
+for i...tam(noche)
+  noche[i] = ordenar[mitad+i]
+endfor
+
+countingSort(tarde, 11)         // O(n)
+countingSort(noche, 11)         // O(n) 
+
+for i ....tam(tarde):
+    p[i] = tarde[i]
+
+for i ...tam(noche):
+  p[tam(tarde) + i] = noche[i]
+
+
+__Complejidad__: O(n)
+
+
+<hr>
+</details>
+
+2. Modificar la solución del inciso anterior para funcionar en el caso que Turno sea un tipo enumerado con más elementos (donde la cantidad de los mismos sigue estando acotada y el órden final está dado por el órden de los valores en el enum. Puedo hacer for t in Turno).
+
+3. ¿La cota O(n) contradice el “lower bound” sobre la complejidad temporal en el peor caso de los algoritmos de ordenamiento? (El Teorema de “lower bound” establece que todo algoritmo general de ordenamiento tiene complejidad temporal Ω(n log n).) Explique su respuesta.
+
+
+**Ejercicio 11**. Sea A[1 . . . n] un arreglo de números naturales en rango (cada elemento está en el rango de 1 a k, siendo k alguna constante). Diseñe un algoritmo que ordene esta clase de arreglos en tiempo O(n). Demuestre que la cota temporal es correcta
+
+<details><summary><b>💡 solucion</b></summary>
+<hr>
+
+
+
+<hr>
+<details>
