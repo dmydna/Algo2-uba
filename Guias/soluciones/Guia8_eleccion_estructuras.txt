@@ -1,0 +1,204 @@
+Eleccion de Estructuras (guia 8)
+
+-----------------------------------------------------
+// EJ 7 .......PlayaDeManiobras
+
+
+Vagon es String
+Tren  es ListaEnlazda<Vagon> 
+
+Modulo PlayaDeManiobras implementa PlayaDeManiobras
+
+   var trenes : vector<listaEnlazada<Vagon>>
+   var size: int
+   var capacidad: int   
+
+   proc abrirPlaya(in capacidad: int): PlayaDeManiobras
+        res = new listaEnlazada<Vagon>                                // O(1)
+        res.capacidad = capacidad                                    // O(1)
+        return res
+
+   proc recibirTren(inout pdm: PlayaDeManiobras, in t: Tren): Z 
+        if pdm.capacidad == pdm.size
+           return 0
+        pdm.size++
+        pdm.trenes[size-1] = t                                        // O(1)
+        return pdm.size-1
+   
+   proc despacharTren(inout pdm: PlayaDeManiobras, in v: int):Z 
+        eliminar(pdm.trenes[v], v)                                    // O(t)
+   
+   proc unirTrenes(inout pdm: PlayaDeManiobras, in v1: int, in v2: int): z
+        // `concat` por tad es siempre O(1) * https://campus.exactas.uba.ar/mod/forum/discuss.php?d=73526
+        // esto se puede hacer (con aliasing) uniendo  lista1.ultimo y lista2.primero (no se pide hacerlo)
+        pdm.trenes[v1] = concat(pdm.trenes[v2], pdm.trenes[v2])          // O(1)
+      
+   proc moverVagon(inout pdm: PlayaDeManiobras, in vagon: string, in v_src: z, in v_dst: z) 
+        agregarAtras(pdm.trenes[v_dst], pdm.trenes[v_src])                           // O(1)
+        eliminar(pdm.trenes, v_src )                                                 // O(1)
+
+
+-----------------------------------------------------
+// EJ 8 .......IngresosAlBanco
+
+
+cantidadPersonas es int
+Dia es int
+
+Modulo IngresosAlBanco implementa IngresosAlBanco
+
+   var totales: dictLineal<Dia, cantidadPersonas> // se puede usar un vector
+   var dia: int
+   
+   proc nuevoIngresos(): IngresosAlBanco             // O(1)
+       dia = 0
+       res.totales = new dictLineal()
+       return res
+
+   proc registrarNuevoDia(inot i: IngresosAlBanco, in cant: int)     //O(n)
+        dia ++
+        cant_ultimo_dia = obtener(i.totales, dia_actual)             // O(n)
+
+        // cada dia es acumulativo, tiene su cantidad + la cantidad de los dias anteriores
+        definir(i.totales, dia ,cant_ultimo_dia + cant)             // O(n)
+        
+
+   proc cantDias(in i :IngresosAlBanco): Z
+        return i.dia
+      
+   proc cantPersonas(in i:IngresosAlBanco, in d: int, in h: int): int     // O(n)
+        cantidad_desde = Obtener(i.totales, d)             // O(n)
+        cantidad_hasta = Obtener(i.totales, h)             // O(n)
+        return (desde_cantidad-hasta_cantidad)
+
+   proc mediana(in i: ingresoAlBanco) // ???
+        if dia != 0
+           if (dia mod 2 == 0)
+             return obtener(i.IngresosAlBanco, dia/2)
+           else 
+             return obtener(i.IngresosAlBanco, dia/2-1)
+         return 0
+
+-----------------------------------------------------
+// EJ 9 .......Maderera
+
+Modulo Maderera implementa Maderera
+
+   var deposito: heap<Liston>
+   var compras:  dictLog<Cliente, <ConjLista<Fecha, Liston> >
+   
+
+   proc comprarUnListon(inout m:Maderera, in tamaño: int)
+        insertar(m.deposito, tamaño)                // O(log m)
+   
+   proc venderListon(inout m:Maderera,in tamaño: int, in cli: Cliente, in f:Fecha)
+        liston = desencolarMax(m.deposito)       // O(log m)
+        liston = liston - tamaño   
+        encolarMax(m.desposito, liston)          // O(log m)
+        if ( esta(m.desposito, cli) )
+            venta = new ConjLista()                 // O(1)
+            agregarAtrasLista(venta, <f,tamaño> )   // O(1)
+            insertarTrie(m.compras, cli, venta)     // O(1)  
+        else 
+            venta = obtenerTrie(m.compras, cli)
+            agregarAtrasLista(venta, <f,tamaño> ) 
+
+
+   proc ventasACliente (in m: Maderera, in cli: Cliente) 
+        res = ObtenerTrie(m.compras, cli) // O(1)
+        return res
+
+
+-----------------------------------------------------
+// EJ 1O .......AgregarLibroAlCatalogo
+
+
+Modulo BiblotecaImpl implementa Bibloteca
+   var socios:   DiccionarioDig<Socio, ConjuntoLog<Libros>>
+   var catalogo: DiccionarioLog<Libro, Posicion>
+   var posicionesLibres: heap<Posicion>
+
+   proc AgregarLibroAlCatalogo(inout b: Bibloteca, in l:idlibro)  // O(log(k) + log(L))
+        if(b.posicionesLibres.size != 0) 
+           posicionLibro = desencolar(b.posicionesLibres)                // O(log k)
+        else
+           encolar(b.posicionesLibres, 0)                      // O(log k)
+        definir(b.catalogo, idlibro, posicionLibro)                      // O(log L)
+
+
+   proc PedirLibro(inout b : Biblioteca, in l : idLibro, in s : Socio)  // O(log(r) + log(k) + log(L))
+        if(! esta(b.socios, s) )
+           librosPrestadosConj = new ConjuntoLog()     // O(1)
+           agregar(librosPrestados, l)                 // O(log r)
+           definir(b.socios, s, librosPrestados)       // O(1)
+         else
+           librosPrestados = obtener(b.socios, s)     // O(1)
+           agregar(librosPrestados, l)                // O(log r)
+
+         posicionLibro = obtener(b.catalogo, l)          // O(log L)
+         encolar(b.posicionesLibres, posicionLibro)      // O(log k)
+
+   proc DevolverLibro(inout b : Biblioteca, in l : idLibro, in s : Socio)     //  O(log(r) + log(k) + log(L))
+        posicionLibro = obtener(b.catalogo, l)                  // O(log L)
+        encolar(b.posicionesLibres, posicionLibro)              // O(log k)
+        librosPrestadosConj = Obtener(b.socios, s)    // O(1)
+        sacar(librosPrestadosConj, l)                 // O(log r)
+
+
+   proc Prestados(in b : Biblioteca, in s : Socio) : Conjunto⟨Libro⟩ : O(1)
+        librosPrestadosConj = obtener(b.socios, s)     // O(1)
+        return librosPrestadosConj
+
+   proc UbicacionDeLibro(in b : Biblioteca, in l : idLibro) : Posicion     // O(log(L))
+        posicionLibro = Obtener(b.catalogo, l)              // O(log L)             
+        return posicionLibro
+
+-----------------------------------------------------
+// EJ 11 .......RegistrarActividad
+
+Modulo AgendaImp implementa AgentaTad 
+   var Actividades : DicLog< idActividad, struct < dia: Dia,  inicio: Hora, fin: Hora>  >
+   var Horas:  DicLog < Dia, struct < maxHora: Hora, horas: array(int) > // array size 24 
+   var Tags : DicDig⟨ Tag, conjLista<idActividad> ⟩
+   
+   proc registrarActividad(inout ag : Agenda, in act : IdActividad, in dia : Dia, in inicio : Hora, in fin : Hora) // O(log(a) + log(d)) 
+        actividad = new struct ⟨ dia: Dia, inicio: Hora, fin: Hora ⟩ >                    // O(1)   
+        definir(ag.Actividades, act, actividad)                                           // O(log a)
+        if !esta(ag.Horas, dia)
+           definir(ag.Horas, dia, struct < maxHora=0 , horas= new array<24> > )           // O(log d)
+        else 
+            skip
+
+        horasDelDia = Obtener(ag.Hora, dia)                                               // O(log d)
+        horasDelDia.horas[incio] ++    // #Act ++                                         // O(log d)
+
+        // Actualizar maxHora 
+        if horasDelDia.horas[horasDelDia.maxHora] <= horasDelDia.horas[incio]            // O(1)
+           horasDelDia.maxHora = inicio                                                  // O(1)
+
+
+
+
+   proc VerActividad(in ag : Agenda, in act : IdActividad) : struct < dia : Dia, inicio : Hora, fin : Hora >      
+        actividad = obtener( ag.Actividades, act) // O(log a)
+        return actividad
+ 
+   proc AgregarTag(inout ag : Agenda, in act : IdActividad, in t : Tag ) // O(log(1))
+        if !( esta(ag.Tags, Tag) )
+           Tags = new ConjLista(idActividad)      // O(1)
+           AgregarAtras(Tags, act)                // O(1)
+           definir(ag.Tags, t ,Tag)               // O(1)
+        else
+           Tags = Obtener(ag.Tags, t)             // O(1)
+           AgregarAtras(Tags, act)                // O(1)
+
+   proc HoraMasOcupada(in ag : Agenda, in d : Dia) : Hora
+        horasDelDia = Obtener(ag.Horas, d)
+        return horasDelDia.maxHora
+        
+
+
+
+   proc ActividadesPorTag(in ag : Agenda, in t : T ag) : Conjunto < IdActividad >
+        actividadesConj = Obtener(ag.Tags, t) // O(1)
+        return actividadesConj 
