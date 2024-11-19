@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="image.png" alt="Sublime's custom image"/>
+  <img src="img/image.png" alt="header"/>
 </p>
 
 <br>
@@ -152,13 +152,13 @@ El resultado debe ser del mismo tipo de datos que el arreglo original. Calcule l
 Por ejemplo, el siguiente arreglo
 
 <p align="center">
-  <img src="image-1.png" alt="Sublime's custom image"/>
+  <img src="img/image-1.png" alt="Sublime's custom image"/>
 </p>
 
 deberia ser transformado a
 
 <p align="center">
-  <img src="image-2.png" alt="Sublime's custom image"/>
+  <img src="img/image-2.png" alt="Sublime's custom image"/>
 </p>
 
 *Ayuda*: se aconseja comenzar el ejercicio con una clara descripci´on en castellano de la estrategia que propone para resolver
@@ -342,13 +342,13 @@ def merge_arrays(A, B):
 
 
 <p align="center">
-  <img src="image-4.png" alt="Sublime's custom image"/>
+  <img src="img/image-4.png" alt="Sublime's custom image"/>
 </p>
 
 Se necesita ordenar un arreglo de alumnos de forma tal que todes les alumnes de la mañana aparezcan al inicio de la tabla según un orden creciente de notas y todos los de la noche aparezcan al final de la tabla también ordenados de manera creciente respecto de su puntaje, como muestra en el siguiente ejemplo:
 
 <p align="center">
-  <img src="image-3.png" alt="Sublime's custom image"/>
+  <img src="img/image-3.png" alt="Sublime's custom image"/>
 </p>
 
 
