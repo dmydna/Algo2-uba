@@ -21,9 +21,12 @@ un ranking, donde primero aparecen los sensores que tiene mayor valor total:
 A = [(1AB, 8, 100), (48A, 10, 100), (1AB, 9, 25), (48A, 9, 25), 
 (1AB, 14, 95), (48A, 15, 20), (1C, 12, 5), (1C, 17, 50)]
 ```
-a) Se pide escribir el algoritmo de MasContaminados, Jusficando detalladamente la complejidad.
+a) Se pide escribir el algoritmo de MasContaminados, Jusficando detalladamente la complejidad.<br>
 b) ¿Cual seria el mejor caso para este algoritmo? ¿Cual seria la cota de complejidad mas ajustada?
 
+
+<details><summary><b>💡 solucion</b></summary>
+<hr>
 
 __Algoritmo masContaminados__:
 
@@ -34,16 +37,14 @@ __Algoritmo masContaminados__:
        para dejar de agregar mediciones.
        - sensor no esta definido : defino valor como < k=0, arreglo de tuplas de mediciones> donde k son las cantidad de mediciones
        que voy a agregar segundo el k recibido por parametro
-  3.hay que transferir las tuplas a un array O(n) y luego ordenar
-    - usamos un iterador para recorrer el diccTrie // O(n)
-  4.ordenamos con MergeSort por primera coordenada (valor de contaminacion) y luego por segunda coordenada (por tiempo mas reciente)
+  3. hay que transferir las tuplas a un array O(n) y luego ordenar
+       - usamos un iterador para recorrer el diccTrie // O(n)
+  4. ordenamos con MergeSort por primera coordenada (valor de contaminacion) y luego por segunda coordenada (por tiempo mas reciente)
 
 
-aclaraciones: hay que usar mergeSort por su complejidad y por que es estable, ya que necesito ordenar por dos criterios.
+**aclaraciones**: hay que usar mergeSort por su complejidad y por que es estable, ya que necesito ordenar por dos criterios.
 
-
-
-<details><summary><b>💡 solucion</b></summary>
+```
 
 masContaminados(in a: Array<struct<sensor: string, in t: int, in v: int>>, in k: int): Array<string>
     
@@ -82,7 +83,9 @@ masContaminados(in a: Array<struct<sensor: string, in t: int, in v: int>>, in k:
   mergeSort(res) // por segunda componente (tiempo mas reciente) o( n log n )
   
   return res
+```
 
+<hr>
 </details>
     
 
